@@ -7,8 +7,14 @@ class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
 
   final bool isLoading;
-  final void Function(String email, String password, String username,
-      bool isLogin, BuildContext ctx) submitFn;
+  final void Function(
+    String email,
+    String password,
+    String username,
+    File image,
+    bool isLogin,
+    BuildContext ctx,
+  ) submitFn;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -23,7 +29,9 @@ class _AuthFormState extends State<AuthForm> {
   var _userImageFile;
 
   void _pickedImage(File image) {
-    _userImageFile = image;
+    setState(() {
+      _userImageFile = image;
+    });
   }
 
   void _trySubmit() {
@@ -48,6 +56,7 @@ class _AuthFormState extends State<AuthForm> {
         _userEmail.trim(),
         _userPassword.trim(),
         _userName.trim(),
+        _userImageFile,
         _isLogin,
         context,
       );
