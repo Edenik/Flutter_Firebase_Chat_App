@@ -28,19 +28,39 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        CircleAvatar(
-          radius: 40,
-          backgroundImage:
-              _pickedImage != null ? FileImage(_pickedImage) : null,
+    return Stack(
+      children: [
+        Column(
+          children: <Widget>[
+            SizedBox(
+              height: 40,
+            ),
+            FlatButton.icon(
+              onPressed: _pickImage,
+              icon: Icon(Icons.photo_camera),
+              label: Text('Add Image'),
+            ),
+          ],
         ),
-        FlatButton.icon(
-          onPressed: _pickImage,
-          icon: Icon(Icons.photo_camera),
-          label: Text('Add Image'),
-        ),
+        Positioned(
+            top: -80,
+            child: Container(
+              child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage:
+                      _pickedImage != null ? FileImage(_pickedImage) : null,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.blue),
+              width: 120,
+              height: 120,
+              padding: const EdgeInsets.all(2.0), // borde width
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFFFFF), // border color
+                shape: BoxShape.circle,
+              ),
+            )),
       ],
+      overflow: Overflow.visible,
     );
   }
 }
