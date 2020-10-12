@@ -13,17 +13,61 @@ class UserImagePicker extends StatefulWidget {
 class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage;
 
-  void _pickImage() async {
+  void _pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
+      source: source,
       imageQuality: 50,
       maxWidth: 150,
     );
+
+    Navigator.of(context).pop();
 
     setState(() {
       _pickedImage = File(pickedFile.path);
     });
     widget.imagePickFn(_pickedImage);
+  }
+
+  void _showBottomModal() {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        Icons.photo_camera,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      title: Text('Using Camera',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          )),
+                      onTap: () => _pickImage(ImageSource.camera),
+                    ),
+                    ListTile(
+                      focusColor: Theme.of(context).primaryColor,
+                      leading: Icon(
+                        Icons.photo,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      title: Text(
+                        'Using Gallery',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      onTap: () => _pickImage(ImageSource.gallery),
+                    ),
+                  ],
+                )),
+          );
+        });
   }
 
   @override
@@ -36,7 +80,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
               height: 40,
             ),
             FlatButton.icon(
-              onPressed: _pickImage,
+              onPressed: _showBottomModal,
               icon: Icon(Icons.photo_camera),
               label: Text('Add Image'),
             ),
