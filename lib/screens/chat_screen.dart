@@ -29,6 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
         return;
       },
     );
+    fbm.subscribeToTopic('chat');
   }
 
   @override
