@@ -27,6 +27,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userName = '';
   var _userPassword = '';
   var _userImageFile;
+  var _passwordVisible = false;
 
   void _pickedImage(File image) {
     setState(() {
@@ -76,7 +77,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  if (!_isLogin) UserImagePicker(_pickedImage),
+                  UserImagePicker(_pickedImage, _isLogin),
                   TextFormField(
                     key: ValueKey('email'),
                     autocorrect: false,
@@ -91,6 +92,9 @@ class _AuthFormState extends State<AuthForm> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email Address',
+                      icon: Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: const Icon(Icons.email)),
                     ),
                     onSaved: (value) {
                       _userEmail = value;
@@ -108,7 +112,12 @@ class _AuthFormState extends State<AuthForm> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(labelText: 'Username'),
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        icon: Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: const Icon(Icons.person)),
+                      ),
                       onSaved: (value) {
                         _userName = value;
                       },
@@ -121,8 +130,25 @@ class _AuthFormState extends State<AuthForm> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(labelText: 'Password'),
-                    obscureText: true,
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: _passwordVisible ? Colors.blue : Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        labelText: 'Password',
+                        icon: Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: const Icon(Icons.lock))),
+                    obscureText: !_passwordVisible,
                     onSaved: (value) {
                       _userPassword = value;
                     },

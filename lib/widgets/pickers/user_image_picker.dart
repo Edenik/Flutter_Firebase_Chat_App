@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagePicker extends StatefulWidget {
-  UserImagePicker(this.imagePickFn);
+  UserImagePicker(this.imagePickFn, this.isLogin);
   final Function(File pickedImage) imagePickFn;
+  final bool isLogin;
   @override
   _UserImagePickerState createState() => _UserImagePickerState();
 }
@@ -74,23 +75,35 @@ class _UserImagePickerState extends State<UserImagePicker> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Column(
-          children: <Widget>[
-            SizedBox(
-              height: 40,
-            ),
-            FlatButton.icon(
-              onPressed: _showBottomModal,
-              icon: Icon(Icons.photo_camera),
-              label: Text('Add Image'),
-            ),
-          ],
-        ),
+        if (widget.isLogin == true)
+          Container(
+            height: 50,
+          ),
+        if (widget.isLogin == false)
+          Column(
+            children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              FlatButton.icon(
+                onPressed: _showBottomModal,
+                icon: Icon(Icons.photo_camera),
+                label: Text('Add Image'),
+              ),
+            ],
+          ),
         Positioned(
             top: -80,
+            right: widget.isLogin ? 105 : 10,
             child: Container(
               child: CircleAvatar(
                   radius: 60,
+                  child: _pickedImage == null
+                      ? Icon(
+                          widget.isLogin ? Icons.flash_on : Icons.message,
+                          size: 60,
+                        )
+                      : null,
                   backgroundImage:
                       _pickedImage != null ? FileImage(_pickedImage) : null,
                   foregroundColor: Colors.white,
