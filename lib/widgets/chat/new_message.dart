@@ -23,6 +23,9 @@ class _NewMessageState extends State<NewMessage> {
       'username': userData['username'],
       'userImage': userData['image_url'],
     });
+    setState(() {
+      _enteredMessage = '';
+    });
     _controller.clear();
   }
 
@@ -36,6 +39,9 @@ class _NewMessageState extends State<NewMessage> {
           Expanded(
             child: TextField(
               controller: _controller,
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
               decoration: InputDecoration(labelText: 'Send message...'),
               onChanged: (value) {
                 setState(() {

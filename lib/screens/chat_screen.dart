@@ -39,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('Chat Screen'),
         actions: <Widget>[
           DropdownButton(
+              underline: SizedBox.shrink(),
               icon: Icon(
                 Icons.more_vert,
                 color: Theme.of(context).primaryIconTheme.color,
